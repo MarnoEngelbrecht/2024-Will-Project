@@ -1,0 +1,71 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 5px;
+    padding: 0;
+  }
+  
+nav {
+    background-color: #479649;
+    display: flex;
+    justify-content: space-between;
+    padding: 1rem 2rem;
+}
+  
+nav .logo a {
+    color: #fff;
+    font-size: 1.5rem;
+    text-decoration: none;
+}
+  
+nav ul {
+    list-style: none;
+    display: flex;
+    gap: 1rem;
+}
+  
+nav ul li a {
+    color: #fff;
+    text-decoration: none;
+}
+  
+.about-us,
+.listings,
+.contact {
+    padding: 2rem;
+    background: #fff;
+    text-align: center;
+}
+
+.listings-grid {
+    display: flex;
+    gap: 2rem;
+    justify-content: center;
+}
+  
+.property-card {
+    background: #f5f5f5;
+    padding: 1rem;
+    border-radius: 5px;
+    text-align: left;
+    max-width: 200px;
+}
+  
+footer {
+    background: #333;
+    color: #fff;
+    text-align: center;
+    padding: 1rem 0;
+}
+  
+footer .footer-links {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+}
+  
+footer .footer-links li a {
+    color: #fff;
+    text-decoration: none;
+}
+  
