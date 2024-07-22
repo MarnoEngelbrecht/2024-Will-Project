@@ -8,6 +8,7 @@ section {
     margin: 20px;
     line-height: 1.6;
 }
+
 h2 {
     font-size: 24px;
 }
@@ -20,15 +21,13 @@ nav {
     background-color: #479649;
     display: flex;
     justify-content: space-between;
-    padding: 1rem 2rem;
-    margin: 0px;
+    padding: 0.5rem 1rem;
 }
-  
+
 nav .logo a {
     color: #fff;
     font-size: 1.5rem;
     text-decoration: none;
-    margin: -20px;
 }
   
 nav ul {
@@ -40,4 +39,8 @@ nav ul {
 nav ul li a {
     color: #fff;
     text-decoration: none;
+}
+
+.logo img {
+    height: 50px;
 }

@@ -8,7 +8,7 @@ nav {
     background-color: #479649;
     display: flex;
     justify-content: space-between;
-    padding: 1rem 2rem;
+    padding: 0.5rem 1rem;
 }
   
 nav .logo a {
@@ -27,7 +27,11 @@ nav ul li a {
     color: #fff;
     text-decoration: none;
 }
-  
+
+.logo img {
+    height: 50px;
+}
+
 .about-us,
 .listings,
 .contact {
