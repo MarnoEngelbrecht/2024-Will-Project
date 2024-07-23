@@ -1,9 +1,10 @@
 let list_grid = document.getElementById("listings-grid")
 
+const apiUrl = 'http://127.0.0.1:5000/properties';
+
 // Function to fetch a list of objects from the API
 function fetchProperties() {
     // URL of the API endpoint
-    const apiUrl = 'http://127.0.0.1:5000/properties';
 
     // Perform a GET request
     fetch(apiUrl+"/getcollection")

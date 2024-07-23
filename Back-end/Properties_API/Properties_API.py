@@ -17,8 +17,10 @@ class User:
             'Password': self.Password
         }
 
+CurrentUser = User(None, None, None, None)
+
 class Property:
-    def __init__(self, RefProperty, Title, Thumbnail, Address, NrBeds, NrBathrooms, HasPool, ParkingSpots, HasWifi, HasGarden, PropertySize):
+    def __init__(self, RefProperty, Title, Thumbnail, Address, NrBeds, NrBathrooms, HasPool, ParkingSpots, HasWifi, HasGarden, PropertySize, RefUser = CurrentUser.RefUser):
         self.RefProperty = RefProperty
         self.Title = Title
         self.Thumbnail = Thumbnail
@@ -30,6 +32,7 @@ class Property:
         self.HasWifi = HasWifi
         self.HasGarden = HasGarden
         self.PropertySize = PropertySize
+        self.RefUser = RefUser
     
     def to_dict(self):
         return {
@@ -43,7 +46,8 @@ class Property:
             'ParkingSpots': self.ParkingSpots,
             'HasWifi': self.HasWifi,
             'HasGarden': self.HasGarden,
-            'PropertySize': self.PropertySize
+            'PropertySize': self.PropertySize,
+            'RefUser' : self.RefUser
         }
 
     # def parseJSON(self, data):
@@ -61,7 +65,7 @@ class Property:
     #     return self
 
 def parsePropertyJSON(data):
-    return Property(None, data['Title'], data['Thumbnail'], data['Address'], data['NrBeds'], data['NrBathrooms'], data['HasPool'], data['ParkingSpots'], data['HasWifi'], data['HasGarden'], data['PropertySize'])
+    return Property(None, data['Title'], data['Thumbnail'], data['Address'], data['NrBeds'], data['NrBathrooms'], data['HasPool'], data['ParkingSpots'], data['HasWifi'], data['HasGarden'], data['PropertySize'], data['RefUser'])
         
 
 
@@ -76,14 +80,12 @@ conn_str = (
 conn = pyodbc.connect(conn_str)
 cursor = conn.cursor()
 # Users 
-# @app.route('/items', methods=['GET'])
-# def get_items():
-#     cursor.execute("SELECT * FROM items")
-#     rows = cursor.fetchall()
-#     items = []
-#     for row in rows:
-#         items.append(User(row.RefUser, row.Username, row.Email, row.Password))
-#     return jsonify(items)
+
+@app.route('/user/login', methods=['GET'])
+def login():
+    data = get_user(1)
+    CurrentUser = User(data['RefUser'], data['Username'], data['Email'], data['Password'])
+    return jsonify({'Shap': 'User logged in'}), 200
 
 @app.route('/user/<int:RefUser>', methods=['GET'])
 def get_user(RefUser):
