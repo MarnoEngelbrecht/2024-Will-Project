@@ -1,4 +1,5 @@
-const apiUrl = 'http://127.0.0.1:5500/users';
+//Api Host
+const apiUrl = 'http://127.0.0.1:5000/user';
 
 async function onSubmit(e){
     e.preventDefault();
@@ -7,7 +8,8 @@ async function onSubmit(e){
     const response = await fetch(apiUrl+'/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username, password })
+        body: JSON.stringify({"Email" : username, "Password" : password }),
+        credentials: 'include'
     });
     const data = await response.json();
     console.log(data);
