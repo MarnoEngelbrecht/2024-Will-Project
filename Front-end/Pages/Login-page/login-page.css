@@ -61,6 +61,11 @@ button {
     transform: translatex(170px) translatey(-40px);
 }
 
+.email-icon {
+    position: absolute;
+    transform: translatex(170px) translatey(-40px);
+}
+
 .password-icon {
     position: absolute;
     transform: translatex(170px) translatey(-40px);

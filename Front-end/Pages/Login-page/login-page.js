@@ -1,23 +1,28 @@
-const apiUrl = 'http://127.0.0.1:5000/users';
+const apiUrl = 'http://127.0.0.1:5500/users';
 
-function onSubmit(){
-    fetch(apiUrl+"/login")
-        .then(response => {
-            // Check if the request was successful
-            if (!response.ok) {
-                throw new Error('Login failed ' + response.statusText);
-            }
-            // Parse the JSON response
-            return response.json();
-        })
-        .then(data => {
-            // Handle the list of objects returned by the API
-            console.log(data);
-            // Assuming the data is an array of property objects
-        })
-        .catch(error => {
-            // Handle any errors that occurred during the fetch
-            console.error('There was a problem with the fetch operation:', error);
-        });
-
+async function onSubmit(e){
+    e.preventDefault();
+    const username = document.getElementById('loginUsername').value;
+    const password = document.getElementById('loginPassword').value;
+    const response = await fetch(apiUrl+'/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, password })
+    });
+    const data = await response.json();
+    console.log(data);
+    console.log(response);
 }
+
+// document.getElementById('loginForm').onsubmit = async function(e) {
+//     e.preventDefault();
+//     const username = document.getElementById('loginUsername').value;
+//     const password = document.getElementById('loginPassword').value;
+//     const response = await fetch(apiUrl+'/login', {
+//         method: 'GET',
+//         headers: { 'Content-Type': 'application/json' },
+//         body: JSON.stringify({ username, password })
+//     });
+//     const data = await response.json();
+//     alert(data.message);
+// };

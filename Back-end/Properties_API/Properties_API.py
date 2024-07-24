@@ -1,6 +1,14 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, make_response
 import pyodbc
 from flask_cors import CORS
+import jwt
+import datetime
+import bcrypt
+
+app = Flask(__name__)
+app.config['SECRET_KEY'] = '&2b6X8V!hHR*EyipHico'
+CORS(app, resources={r"/*": {"origins": ["http://127.0.0.1:5500"]}})
+
 
 class User:
     def __init__(self, RefUser, Username, Email, Password):
@@ -64,14 +72,25 @@ class Property:
     #     self.PropertySize = data['PropertySize']
     #     return self
 
+#Login
+def hash_password(password):
+    salt = bcrypt.gensalt()
+    hashed_password = bcrypt.hashpw(password.encode('utf-8'), salt)
+    return salt, hashed_password
+
+def generate_jwt(RefUser, username, email):
+    token = jwt.encode({
+        'RefUser': RefUser,
+        'username': username,
+        'email': email,
+        'exp': datetime.datetime.utcnow() + datetime.timedelta(hours=1)
+    }, app.config['SECRET_KEY'])
+    return token
+
+
 def parsePropertyJSON(data):
     return Property(None, data['Title'], data['Thumbnail'], data['Address'], data['NrBeds'], data['NrBathrooms'], data['HasPool'], data['ParkingSpots'], data['HasWifi'], data['HasGarden'], data['PropertySize'], data['RefUser'])
         
-
-
-app = Flask(__name__)
-CORS(app, resources={r"/*": {"origins": "http://127.0.0.1:5500"}})
-
 # Configure database connection
 conn_str = (
     r'DRIVER={Microsoft Access Driver (*.mdb, *.accdb)};'
@@ -81,11 +100,22 @@ conn = pyodbc.connect(conn_str)
 cursor = conn.cursor()
 # Users 
 
-@app.route('/user/login', methods=['GET'])
+@app.route('/user/login', methods=['POST'])
 def login():
-    data = get_user(1)
-    CurrentUser = User(data['RefUser'], data['Username'], data['Email'], data['Password'])
-    return jsonify({'Shap': 'User logged in'}), 200
+    data = request.get_json()
+    password = data['Password']
+    exist, status = get_user_email(data['Email'])
+    if status == 404:
+        return jsonify({'error': 'User was not found'}), 404
+    salt = exist['Salt']
+    if bcrypt.hashpw(password.encode('utf-8'), salt) == exist['Password']:
+        token = generate_jwt(exist['RefUser'], exist['Username'], exist['Email'])
+        resp = make_response(jsonify({'message': 'Login successful'}))
+        resp.set_cookie('properties_token', token)
+        CurrentUser = User(data['RefUser'], data['Username'], data['Email'], data['Password'])
+        return resp
+    else:
+        return jsonify({'message': 'Invalid credentials'}), 401
 
 @app.route('/user/<int:RefUser>', methods=['GET'])
 def get_user(RefUser):
@@ -95,10 +125,26 @@ def get_user(RefUser):
         return jsonify(User(row.RefUser, row.Username, row.Email, row.Password).to_dict())
     return jsonify({'error': 'User not found'}), 404
 
-@app.route('/user/insert', methods=['POST'])
+@app.route('/user/GetModelByEmail', methods=['GET'])
+def get_model_email():
+    data = request.get_json()
+    return get_user_email(data['Email'])
+
+def get_user_email(email):
+    cursor.execute("SELECT * FROM users WHERE email = ?", email)
+    row = cursor.fetchone()
+    if row:
+        return jsonify(User(row.RefUser, row.Username, row.Email, row.Password).to_dict()), 200
+    return jsonify({'error': 'User not found'}), 404
+
+@app.route('/user/register', methods=['POST'])
 def create_user():
     data = request.get_json()
-    cursor.execute("INSERT INTO users (Username, Email, Password) VALUES (?, ?, ?)", data['Username'], data['Email'], data['Password'])
+    exist, status = get_user_email(data['Email'])
+    if status == 200:
+        return jsonify({'error': 'User already exists'}), 406
+    salt, hashed_password = hash_password(data['Password'])
+    cursor.execute("INSERT INTO users (Username, Email, Password, Salt) VALUES (?, ?, ?, ?)", data['Username'], data['Email'], hashed_password, salt)
     conn.commit()
     return jsonify({'message': 'User created successfully'}), 201
 

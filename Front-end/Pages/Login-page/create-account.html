@@ -12,18 +12,25 @@
             <h1>Sitename</h1>
             <h3>Create your new account.</h3>
 
-            <form action="">
-                    <input type="text" 
-                    id="first" 
-                    name="first" 
-                    placeholder="Username/Email" required>
-                    <i class='bx bxs-user user-icon'></i>
+            <form id="LoginForm" action="">
+
+                  <input type="text" 
+                        id="registerUsername" 
+                        name="registerUsername" 
+                        placeholder="Username" required>
+                  <i class='bx bxs-user user-icon'></i>
+
+                  <input type="text" 
+                        id="registerEmail" 
+                        name="registerEmail" 
+                        placeholder="Email" required>
+                        <i class='bx bxs-envelope email-icon'></i>
 
                   <input type="password"
-                         id="password" 
-                         name="password"
-                         placeholder="Password" required>
-                    <i class='bx bxs-lock-alt password-icon'></i>
+                        id="registerPassword" 
+                        name="registerPassword"
+                        placeholder="Password" required>
+                  <i class='bx bxs-lock-alt password-icon'></i>
 
                   <div class="wrap">
                         <button type="submit"

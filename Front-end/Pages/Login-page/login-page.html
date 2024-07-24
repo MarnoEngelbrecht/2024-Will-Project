@@ -12,22 +12,21 @@
             <h1>Sitename</h1>
             <h3>If you are a member already please Login</h3>
 
-            <form action="">
-                    <input type="text" 
-                    id="first" 
-                    name="first" 
-                    placeholder="Username/Email" required>
-                    <i class='bx bxs-user user-icon'></i>
+            <form id="LoginForm">
+                  <input type="text" 
+                        id="loginUsername"
+                        name="loginUsername" 
+                        placeholder="Email/Username" required>
+                  <i class='bx bxs-envelope email-icon'></i>
 
                   <input type="password"
-                         id="password" 
-                         name="password"
+                         id="loginPassword" 
+                         name="loginPassword"
                          placeholder="Password" required>
-                    <i class='bx bxs-lock-alt password-icon'></i>
+                  <i class='bx bxs-lock-alt password-icon'></i>
 
                   <div class="wrap">
-                        <button type="submit"
-                                onclick="solve()">
+                        <button type="submit" onclick="onSubmit(event)">
                               Submit
                         </button>
                   </div>
@@ -39,6 +38,7 @@
                   </a>
             </p>
       </div>
+      <script src="../Login-page/login-page.js"></script>
 </body>
 
 </html>
