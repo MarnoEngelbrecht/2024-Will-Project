@@ -32,6 +32,8 @@ class User:
             'Salt' : self.Salt
         }
 
+currentUser = User(None, None, None, None, None)
+
 class Property:
     def __init__(self, RefProperty, Title, Thumbnail, Address, NrBeds, NrBathrooms, HasPool, ParkingSpots, HasWifi, HasGarden, PropertySize, RefUser):
         self.RefProperty = RefProperty
@@ -138,6 +140,7 @@ def login():
         token = generate_jwt(user['RefUser'], user['Username'], user['Email'])
         resp = make_response(jsonify({'message': 'Login successful'}))
         resp.set_cookie('properties_token', token, httponly=True)
+        currentUser = User(user['RefUser'], user['Username'], user['Email'], None, None)
         return resp
     else:
         return jsonify({'message': 'Invalid credentials'}), 401
@@ -213,7 +216,7 @@ def get_property_collection():
     rows = cursor.fetchall()
     items = []
     for row in rows:
-        items.append(Property(row.RefProperty, row.Title, row.Thumbnail, row.Address, row.NrBeds, row.NrBathrooms, row.HasPool, row.ParkingSpots, row.HasWifi, row.HasGarden, row.PropertySize).to_dict())
+        items.append(Property(row.RefProperty, row.Title, row.Thumbnail, row.Address, row.NrBeds, row.NrBathrooms, row.HasPool, row.ParkingSpots, row.HasWifi, row.HasGarden, row.PropertySize, row.RefUser).to_dict())
     return jsonify(items)
 
 @app.route('/properties/<int:RefProperty>', methods=['GET'])
@@ -221,7 +224,7 @@ def get_property(RefProperty):
     cursor.execute("SELECT * FROM properties WHERE RefProperty=?", RefProperty)
     row = cursor.fetchone()
     if row:
-        return jsonify(Property(row.RefProperty, row.Title, row.Thumbnail, row.Address, row.NrBeds, row.NrBathrooms, row.HasPool, row.ParkingSpots, row.HasWifi, row.HasGarden, row.PropertySize).to_dict())
+        return jsonify(Property(row.RefProperty, row.Title, row.Thumbnail, row.Address, row.NrBeds, row.NrBathrooms, row.HasPool, row.ParkingSpots, row.HasWifi, row.HasGarden, row.PropertySize, row.RefUser).to_dict())
     return jsonify({'error': 'Property not found'}), 404
 
 @app.route('/properties/insert', methods=['POST'])
@@ -229,7 +232,7 @@ def get_property(RefProperty):
 def create_property():
     data = request.get_json()
     property = parsePropertyJSON(data)
-    cursor.execute("INSERT INTO properties (Title, Thumbnail, Address, NrBeds, NrBathrooms, HasPool, ParkingSpots, HasWifi, HasGarden, PropertySize) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", property.Title, property.Thumbnail, property.Address, property.NrBeds, property.NrBathrooms, property.HasPool, property.ParkingSpots, property.HasWifi, property.HasGarden, property.PropertySize)
+    cursor.execute("INSERT INTO properties (Title, Thumbnail, Address, NrBeds, NrBathrooms, HasPool, ParkingSpots, HasWifi, HasGarden, PropertySize, RefUser) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", property.Title, property.Thumbnail, property.Address, property.NrBeds, property.NrBathrooms, property.HasPool, property.ParkingSpots, property.HasWifi, property.HasGarden, property.PropertySize, currentUser.RefUser)
     conn.commit()
     return jsonify({'message': 'Property created successfully'}), 201
 

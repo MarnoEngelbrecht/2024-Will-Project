@@ -12,8 +12,12 @@ async function onSubmit(e){
         credentials: 'include'
     });
     const data = await response.json();
-    console.log(data);
-    console.log(response);
+    if (response.status === 200) {
+        // Redirect to a new HTML page
+        window.location.href = '../Landing-page/landing-page.html';
+    }
+    console.log(response)
+
 }
 
 // document.getElementById('loginForm').onsubmit = async function(e) {
