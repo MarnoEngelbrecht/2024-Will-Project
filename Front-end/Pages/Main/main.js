@@ -38,24 +38,26 @@ function loadListingsPage() {
     content.appendChild(script);
 }
 
-function loadLoginPage() {
-    const script = document.createElement('script');
-    script.src = '../Login-page/login-page.js';
-    script.onload = () => {
-        fetchProperties();
-    };
-    content.appendChild(script);
-}
+// function loadLoginPage() {
+//     const script = document.createElement('script');
+//     script.src = '../Login-page/login-page.js';
+//     script.onload = () => {
+//         fetchProperties();
+//     };
+//     content.appendChild(script);
+// }
 
 document.addEventListener('DOMContentLoaded', function() {
     navigateTo('../Landing-page/landing-page.html');
-    const openDialogButton = document.getElementById('open-dialog');
+    const openLoginDialogButton = document.getElementById('open-login-dialog');
     const closeDialogButton = document.getElementById('close-dialog');
-    const closeDialogSaveButton = document.getElementById('close-dialog-save');
+    const closeDialogSubmitButton = document.getElementById('close-dialog-submit');
+    const openCreateDialogButton = document.getElementById('open-create-dialog');
+    const closeDialogCreateAccountButton = document.getElementById('goToCreateDialog');
     const dialog = document.getElementById('login-dialog');
+    // const createDialog = document.getElementById('create-dialog');
 
-    // Open the dialog when the "Open Dialog" button is clicked
-    openDialogButton.addEventListener('click', function() {
+    openLoginDialogButton.addEventListener('click', function() {
         dialog.showModal();
     });
 
@@ -63,11 +65,15 @@ document.addEventListener('DOMContentLoaded', function() {
         dialog.close();
     });
 
-    closeDialogSaveButton.addEventListener('click', function() {
+    closeDialogSubmitButton.addEventListener('click', function() {
         dialog.close();
     });
 
-    closeDialogSaveButton.addEventListener('click', function() {
+    openCreateDialogButton.addEventListener('click', function() {
+        dialog.showModal();
+    });
+
+    closeDialogCreateAccountButton.addEventListener('click', function() {
         dialog.close();
     });
 

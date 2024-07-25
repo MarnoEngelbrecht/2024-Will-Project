@@ -23,7 +23,7 @@
           <li><a href="../Landing-page/landing-page.html">Home</a></li>
           <li><a href="../Listings-page/listings-page.html">Listings</a></li>
           <li><a href="../About-page/about-us.html">About Us</a></li>
-          <li><a id="open-dialog">Login</a></li>
+          <li><a id="open-login-dialog">Login</a></li>
         </ul>
       </nav>
 
@@ -47,14 +47,13 @@
                   <i class='bx bxs-lock-alt password-icon'></i>
       
                   <div class="wrap">
-                        <button type="submit" id="close-dialog-save" onclick="onSubmit(event)">
+                        <button type="submit" id="close-dialog-submit" onclick="onSubmit(event)">
                               Submit
                         </button>
                   </div>
             </form>
             <p>Don't have an account?
-                  <a id="goToCreateDialog"
-                        style="text-decoration: none;">
+                  <a id="goToCreateDialog">
                         Create an account
                   </a>
             </p>
@@ -62,12 +61,13 @@
     </dialog>
 
     <dialog id="create-dialog">
-        <div class="main">
-            <h1>Sitename</h1>
+        <div class="login-main">
+            <i id="close-dialog" class='bx bx-x bx-sm exit-icon'></i>
+            <h1>EpicEstates</h1>
             <h3>Create your new account.</h3>
 
-            <form id="LoginForm">
-
+            <!-- helppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppp -->
+            <form id="">
                   <input type="text" 
                         id="registerUsername" 
                         name="registerUsername" 
