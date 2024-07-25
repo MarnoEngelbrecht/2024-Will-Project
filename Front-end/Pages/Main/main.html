@@ -53,12 +53,53 @@
                   </div>
             </form>
             <p>Don't have an account?
-                  <a href="create-account.html"
+                  <a id="goToCreateDialog"
                         style="text-decoration: none;">
                         Create an account
                   </a>
             </p>
       </div>
+    </dialog>
+
+    <dialog id="create-dialog">
+        <div class="main">
+            <h1>Sitename</h1>
+            <h3>Create your new account.</h3>
+
+            <form id="LoginForm">
+
+                  <input type="text" 
+                        id="registerUsername" 
+                        name="registerUsername" 
+                        placeholder="Username" required>
+                  <i class='bx bxs-user user-icon'></i>
+
+                  <input type="text" 
+                        id="registerEmail" 
+                        name="registerEmail" 
+                        placeholder="Email" required>
+                        <i class='bx bxs-envelope email-icon'></i>
+
+                  <input type="password"
+                        id="registerPassword" 
+                        name="registerPassword"
+                        placeholder="Password" required>
+                  <i class='bx bxs-lock-alt password-icon'></i>
+
+                  <div class="wrap">
+                        <button type="submit"
+                                onclick="solve()">
+                              Create Account
+                        </button>
+                  </div>
+            </form>
+            <p>Already have an account?
+                  <a id="goToLoginDialog"
+                     style="text-decoration: none;">
+                        Go to Login
+                  </a>
+            </p>
+        </div>
     </dialog>
 
     <!-- Content area where other pages will be loaded -->

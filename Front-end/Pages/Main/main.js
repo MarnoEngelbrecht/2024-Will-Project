@@ -67,6 +67,10 @@ document.addEventListener('DOMContentLoaded', function() {
         dialog.close();
     });
 
+    closeDialogSaveButton.addEventListener('click', function() {
+        dialog.close();
+    });
+
     dialog.addEventListener('click', function(event) {
         if (event.target === dialog) {
             dialog.close();
@@ -92,5 +96,4 @@ async function onSubmit(e){
         navigateTo('../Landing-page/landing-page.html');
     }
     console.log(response)
-
 }
