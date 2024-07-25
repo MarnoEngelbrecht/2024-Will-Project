@@ -47,7 +47,7 @@
                   <i class='bx bxs-lock-alt password-icon'></i>
       
                   <div class="wrap">
-                        <button type="submit" id="close-dialog-submit" onclick="onSubmit(event)">
+                        <button type="submit" id="close-dialog-submit" onclick="onLoginSubmit(event)">
                               Submit
                         </button>
                   </div>
@@ -67,7 +67,7 @@
             <h3>Create your new account.</h3>
 
             <!-- helppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppp -->
-            <form id="">
+            <form id="registerForm">
                   <input type="text" 
                         id="registerUsername" 
                         name="registerUsername" 
@@ -87,8 +87,7 @@
                   <i class='bx bxs-lock-alt password-icon'></i>
 
                   <div class="wrap">
-                        <button type="submit"
-                                onclick="solve()">
+                        <button type="submit" onclick="onRegisterSubmit(event)">
                               Create Account
                         </button>
                   </div>

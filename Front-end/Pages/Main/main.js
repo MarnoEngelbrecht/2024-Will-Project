@@ -47,16 +47,17 @@ function loadListingsPage() {
 //     content.appendChild(script);
 // }
 
+const openLoginDialogButton = document.getElementById('open-login-dialog');
+const closeLoginDialogButton = document.getElementById('close-login-dialog');
+const closeCreateDialogButton = document.getElementById('close-create-dialog');
+const closeDialogSubmitButton = document.getElementById('close-dialog-submit');
+const closeDialogCreateAccountButton = document.getElementById('goToCreateDialog');
+const closeDialogLoginButton = document.getElementById('goToLoginDialog');
+const loginDialog = document.getElementById('login-dialog');
+const createDialog = document.getElementById('create-dialog');
+
 document.addEventListener('DOMContentLoaded', function() {
     navigateTo('../Landing-page/landing-page.html');
-    const openLoginDialogButton = document.getElementById('open-login-dialog');
-    const closeLoginDialogButton = document.getElementById('close-login-dialog');
-    const closeCreateDialogButton = document.getElementById('close-create-dialog');
-    const closeDialogSubmitButton = document.getElementById('close-dialog-submit');
-    const closeDialogCreateAccountButton = document.getElementById('goToCreateDialog');
-    const closeDialogLoginButton = document.getElementById('goToLoginDialog');
-    const loginDialog = document.getElementById('login-dialog');
-    const createDialog = document.getElementById('create-dialog');
 
     openLoginDialogButton.addEventListener('click', function() {
         loginDialog.showModal();
@@ -80,14 +81,18 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     closeDialogLoginButton.addEventListener('click', function() {
-        createDialog.close();
-        loginDialog.showModal();
+        openLoginDialog();
     });
 });
 
+function openLoginDialog(){
+    createDialog.close();
+    loginDialog.showModal();    
+}
+
 const apiUrl = 'http://127.0.0.1:5000/user';
 
-async function onSubmit(e){
+async function onLoginSubmit(e){
     e.preventDefault();
     const username = document.getElementById('loginUsername').value;
     const password = document.getElementById('loginPassword').value;
@@ -102,5 +107,25 @@ async function onSubmit(e){
         // Redirect to a new HTML page
         navigateTo('../Landing-page/landing-page.html');
     }
-    console.log(response)
+    // insert toast
+}
+
+async function onRegisterSubmit(e){
+    e.preventDefault();
+    const username = document.getElementById('registerUsername').value;
+    const email = document.getElementById('registerEmail').value;
+    const password = document.getElementById('registerPassword').value;
+    const response = await fetch(apiUrl+'/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({"Username" : username, "Password" : password, "Email" : email})
+    }).then(response=>{
+        if (response.status === 201){
+            openLoginDialog()
+            const data = response.json();
+        }
+    }).catch(error=>{
+        console.warn(error);
+    })
+    // insert toast
 }

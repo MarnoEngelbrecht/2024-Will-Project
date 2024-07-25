@@ -118,7 +118,7 @@ def parsePropertyJSON(data):
 # Configure database connection
 conn_str = (
     r'DRIVER={Microsoft Access Driver (*.mdb, *.accdb)};'
-    r'DBQ=C:/Users/Marno/Desktop/School/Will Project/2024-Will-Project/Back-end/Property Listings.accdb;'
+    r'DBQ=C:/Users/Marno/Desktop/School/Will Project/Property Listings.accdb;'
 )
 conn = pyodbc.connect(conn_str)
 cursor = conn.cursor()
