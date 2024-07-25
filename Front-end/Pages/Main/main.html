@@ -1,0 +1,79 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EpicEstates</title>
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="../Main/main.css">
+    <link rel="stylesheet" href="../Listings-page/listings-page.css">
+    <script src="https://kit.fontawesome.com/175b84bdec.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="../Landing-page/landing-page.css">
+    <link rel="stylesheet" href="../Login-page/login-page.css">
+    <link rel='stylesheet' href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css'>
+</head>
+<body>
+    <!-- Include the custom header element -->
+    <nav>
+        <div class="logo">
+            <a href="../Landing-page/landing-page.html"><img src="../../Images/EpicEstates_transparent-.png"></a>
+        </div>
+        <ul class="nav-links">
+          <li><a href="../Landing-page/landing-page.html">Home</a></li>
+          <li><a href="../Listings-page/listings-page.html">Listings</a></li>
+          <li><a href="../About-page/about-us.html">About Us</a></li>
+          <li><a id="open-dialog">Login</a></li>
+        </ul>
+      </nav>
+
+    <dialog id="login-dialog">
+        <div class="login-main">
+            <i id="close-dialog" class='bx bx-x bx-sm exit-icon'></i>
+            <h1>EpicEstates</h1>
+            <h3>If you are a member already please Login</h3>
+      
+            <form id="LoginForm">
+                  <input type="text" 
+                        id="loginUsername"
+                        name="loginUsername" 
+                        placeholder="Email/Username" required>
+                  <i class='bx bxs-envelope email-icon'></i>
+      
+                  <input type="password"
+                              id="loginPassword" 
+                              name="loginPassword"
+                              placeholder="Password" required>
+                  <i class='bx bxs-lock-alt password-icon'></i>
+      
+                  <div class="wrap">
+                        <button type="submit" id="close-dialog-save" onclick="onSubmit(event)">
+                              Submit
+                        </button>
+                  </div>
+            </form>
+            <p>Don't have an account?
+                  <a href="create-account.html"
+                        style="text-decoration: none;">
+                        Create an account
+                  </a>
+            </p>
+      </div>
+    </dialog>
+
+    <!-- Content area where other pages will be loaded -->
+    <main id="content">
+    </main>
+
+    <footer>
+        <p>&copy; 2024 EpicEstates. All rights reserved.</p>
+        <div class="spacer"></div>
+        <ul class="footer-links">
+            <li><a href="../Policy-page/privicy-policy.html">Privacy Policy</a></li> •
+            <li><a href="../Policy-page/terms-of-service.html">Terms of Service</a></li>
+        </ul>
+    </footer>
+
+    <script src="../Main/main.js"></script>
+</body>
+</html>

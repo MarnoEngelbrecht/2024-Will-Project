@@ -1,11 +1,8 @@
-let list_grid = document.getElementById("listings-grid")
-
-const apiUrl = 'http://127.0.0.1:5000/properties';
-
 // Function to fetch a list of objects from the API
 function fetchProperties() {
     // URL of the API endpoint
-
+    const apiUrl = 'http://127.0.0.1:5000/properties';
+    let list_grid = document.getElementById("listings-grid")
     // Perform a GET request
     fetch(apiUrl+"/getcollection")
         .then(response => {
@@ -32,11 +29,6 @@ function fetchProperties() {
             console.error('There was a problem with the fetch operation:', error);
         });
 }
-
-// Example usage: Fetch properties when the DOM content is loaded
-document.addEventListener('DOMContentLoaded', function() {
-    fetchProperties();
-});
 
 // Function to create a property card (same as the previous example)
 function createPropertyCard(property) {
