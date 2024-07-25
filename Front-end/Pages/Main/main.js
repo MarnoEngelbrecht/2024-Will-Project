@@ -50,31 +50,38 @@ function loadListingsPage() {
 document.addEventListener('DOMContentLoaded', function() {
     navigateTo('../Landing-page/landing-page.html');
     const openLoginDialogButton = document.getElementById('open-login-dialog');
-    const closeDialogButton = document.getElementById('close-dialog');
+    const closeLoginDialogButton = document.getElementById('close-login-dialog');
+    const closeCreateDialogButton = document.getElementById('close-create-dialog');
     const closeDialogSubmitButton = document.getElementById('close-dialog-submit');
-    const openCreateDialogButton = document.getElementById('open-create-dialog');
     const closeDialogCreateAccountButton = document.getElementById('goToCreateDialog');
-    const dialog = document.getElementById('login-dialog');
-    // const createDialog = document.getElementById('create-dialog');
+    const closeDialogLoginButton = document.getElementById('goToLoginDialog');
+    const loginDialog = document.getElementById('login-dialog');
+    const createDialog = document.getElementById('create-dialog');
 
     openLoginDialogButton.addEventListener('click', function() {
-        dialog.showModal();
+        loginDialog.showModal();
     });
 
-    closeDialogButton.addEventListener('click', function() {
-        dialog.close();
+    closeLoginDialogButton.addEventListener('click', function() {
+        loginDialog.close();
+    });
+
+    closeCreateDialogButton.addEventListener('click', function() {
+        createDialog.close();
     });
 
     closeDialogSubmitButton.addEventListener('click', function() {
-        dialog.close();
-    });
-
-    openCreateDialogButton.addEventListener('click', function() {
-        dialog.showModal();
+        loginDialog.close();
     });
 
     closeDialogCreateAccountButton.addEventListener('click', function() {
-        dialog.close();
+        loginDialog.close();
+        createDialog.showModal();
+    });
+
+    closeDialogLoginButton.addEventListener('click', function() {
+        createDialog.close();
+        loginDialog.showModal();
     });
 });
 
