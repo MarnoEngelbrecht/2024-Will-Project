@@ -97,3 +97,59 @@ async function onSubmit(e){
     }
     console.log(response)
 }
+
+// Dropdown menu
+
+document.addEventListener('DOMContentLoaded', () => {
+    const loginLink = document.getElementById('open-dialog');
+    const userDropdown = document.getElementById('userDropdown');
+
+
+function checkLoginStatus() {
+    const token = localStorage.getItem('properties_token');
+    if (token) {
+        loginLink.style.display = 'none';
+        userDropdown.style.display = 'block';
+    } 
+    else {
+        loginLink.style.display = 'block';
+        userDropdown.style.display = 'none';
+    }
+}
+
+document.getElementById('logout').addEventListener('click', () => {
+    localStorage.removeItem('properties_token');
+    checkLoginStatus();
+  });
+
+    checkLoginStatus();
+});
+
+function login() {
+    const apiUrl = 'http://127.0.0.1:5000/user';
+
+    const userCredentials = {
+        username: 'Username',
+        password: 'Password'
+    };
+
+    fetch(apiUrl, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(userCredentials)
+    })
+    .then(response => response.json())
+    .then(data => {
+    if (data.token) {
+        localStorage.setItem('authToken', data.token);
+        window.location.reload();
+    } else {
+        alert('Login failed');
+    }
+    })
+    .catch(error => {
+    console.error('Error: Login Failed', error);
+    });
+}
