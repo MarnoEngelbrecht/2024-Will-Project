@@ -30,7 +30,7 @@ function fetchProperties() {
         });
 }
 
-// Function to create a property card (same as the previous example)
+// Function to create a property card 
 function createPropertyCard(property) {
     const card = document.createElement('div');
     card.id = 'property-card';
@@ -46,19 +46,19 @@ function createPropertyCard(property) {
     card.appendChild(title);
 
     const beds = document.createElement('p');
-    const BathIcon = document.createElement("i");
-    BathIcon.classList.add("fa-regular");
-    BathIcon.classList.add("fa-bath");
-    beds.appendChild(BathIcon);
-    beds.textContent = property.NrBeds + " Bedrooms, " + property.NrBathrooms;
+    const BedIcon = document.createElement("i");
+    BedIcon.classList.add("bx");
+    BedIcon.classList.add("bx-bed");
+    beds.textContent = property.NrBeds + " ";
+    beds.appendChild(BedIcon);
     card.appendChild(beds);
 
     const bathrooms = document.createElement('p');
-    bathrooms.textContent = "Bathrooms " + property.NrBathrooms;
+    bathrooms.textContent = property.NrBathrooms + " Bathrooms";
     card.appendChild(bathrooms);
 
     const parking = document.createElement('p');
-    parking.textContent = property.ParkingSpots;
+    parking.textContent = property.ParkingSpots + " Parking Spots";
     card.appendChild(parking);
 
     const link = document.createElement('a');
