@@ -1,44 +1,33 @@
-<!DOCTYPE html>
-<html>
 
-<head>
-      <title>Login</title>
-      <link rel="stylesheet" href="login-page.css">
-      <link rel='stylesheet' href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css'>
-</head>
+<div class="login-main">
+      <h1>Sitename</h1>
+      <h3>If you are a member already please Login</h3>
 
-<body>
-      <div class="main">
-            <h1>Sitename</h1>
-            <h3>If you are a member already please Login</h3>
+      <form id="LoginForm">
+            <input type="text" 
+                  id="loginUsername"
+                  name="loginUsername" 
+                  placeholder="Email/Username" required>
+            <i class='bx bxs-envelope email-icon'></i>
 
-            <form action="">
-                    <input type="text" 
-                    id="first" 
-                    name="first" 
-                    placeholder="Username/Email" required>
-                    <i class='bx bxs-user user-icon'></i>
+            <input type="password"
+                        id="loginPassword" 
+                        name="loginPassword"
+                        placeholder="Password" required>
+            <i class='bx bxs-lock-alt password-icon'></i>
 
-                  <input type="password"
-                         id="password" 
-                         name="password"
-                         placeholder="Password" required>
-                    <i class='bx bxs-lock-alt password-icon'></i>
+            <div class="wrap">
+                  <button type="submit" onclick="onSubmit(event)">
+                        Submit
+                  </button>
+            </div>
+      </form>
+      <p>Don't have an account?
+            <a href="create-account.html"
+                  style="text-decoration: none;">
+                  Create an account
+            </a>
+      </p>
+</div>
+<!-- <script src="../Login-page/login-page.js"></script> -->
 
-                  <div class="wrap">
-                        <button type="submit"
-                                onclick="solve()">
-                              Submit
-                        </button>
-                  </div>
-            </form>
-            <p>Don't have an account?
-                  <a href="create-account.html"
-                     style="text-decoration: none;">
-                        Create an account
-                  </a>
-            </p>
-      </div>
-</body>
-
-</html>
