@@ -38,49 +38,61 @@ function loadListingsPage() {
     content.appendChild(script);
 }
 
-function loadLoginPage() {
-    const script = document.createElement('script');
-    script.src = '../Login-page/login-page.js';
-    script.onload = () => {
-        fetchProperties();
-    };
-    content.appendChild(script);
-}
+// function loadLoginPage() {
+//     const script = document.createElement('script');
+//     script.src = '../Login-page/login-page.js';
+//     script.onload = () => {
+//         fetchProperties();
+//     };
+//     content.appendChild(script);
+// }
+
+const openLoginDialogButton = document.getElementById('open-login-dialog');
+const closeLoginDialogButton = document.getElementById('close-login-dialog');
+const closeCreateDialogButton = document.getElementById('close-create-dialog');
+const closeDialogSubmitButton = document.getElementById('close-dialog-submit');
+const closeDialogCreateAccountButton = document.getElementById('goToCreateDialog');
+const closeDialogLoginButton = document.getElementById('goToLoginDialog');
+const loginDialog = document.getElementById('login-dialog');
+const createDialog = document.getElementById('create-dialog');
 
 document.addEventListener('DOMContentLoaded', function() {
     navigateTo('../Landing-page/landing-page.html');
-    const openDialogButton = document.getElementById('open-dialog');
-    const closeDialogButton = document.getElementById('close-dialog');
-    const closeDialogSaveButton = document.getElementById('close-dialog-save');
-    const dialog = document.getElementById('login-dialog');
 
-    // Open the dialog when the "Open Dialog" button is clicked
-    openDialogButton.addEventListener('click', function() {
-        dialog.showModal();
+    openLoginDialogButton.addEventListener('click', function() {
+        loginDialog.showModal();
     });
 
-    closeDialogButton.addEventListener('click', function() {
-        dialog.close();
+    closeLoginDialogButton.addEventListener('click', function() {
+        loginDialog.close();
     });
 
-    closeDialogSaveButton.addEventListener('click', function() {
-        dialog.close();
+    closeCreateDialogButton.addEventListener('click', function() {
+        createDialog.close();
     });
 
-    closeDialogSaveButton.addEventListener('click', function() {
-        dialog.close();
+    closeDialogSubmitButton.addEventListener('click', function() {
+        loginDialog.close();
     });
 
-    dialog.addEventListener('click', function(event) {
-        if (event.target === dialog) {
-            dialog.close();
-        }
+    closeDialogCreateAccountButton.addEventListener('click', function() {
+        loginDialog.close();
+        createDialog.showModal();
+    });
+
+    closeDialogLoginButton.addEventListener('click', function() {
+        openLoginDialog();
     });
 });
 
+function openLoginDialog(){
+    createDialog.close();
+    loginDialog.showModal();    
+}
+
 const apiUrl = 'http://127.0.0.1:5000/user';
 
-async function onSubmit(e){
+async function onLoginSubmit(e){
     e.preventDefault();
     const username = document.getElementById('loginUsername').value;
     const password = document.getElementById('loginPassword').value;
@@ -95,61 +107,25 @@ async function onSubmit(e){
         // Redirect to a new HTML page
         navigateTo('../Landing-page/landing-page.html');
     }
-    console.log(response)
+    // insert toast
 }
 
-// Dropdown menu
-
-document.addEventListener('DOMContentLoaded', () => {
-    const loginLink = document.getElementById('open-dialog');
-    const userDropdown = document.getElementById('userDropdown');
-
-
-function checkLoginStatus() {
-    const token = localStorage.getItem('properties_token');
-    if (token) {
-        loginLink.style.display = 'none';
-        userDropdown.style.display = 'block';
-    } 
-    else {
-        loginLink.style.display = 'block';
-        userDropdown.style.display = 'none';
-    }
-}
-
-document.getElementById('logout').addEventListener('click', () => {
-    localStorage.removeItem('properties_token');
-    checkLoginStatus();
-  });
-
-    checkLoginStatus();
-});
-
-function login() {
-    const apiUrl = 'http://127.0.0.1:5000/user';
-
-    const userCredentials = {
-        username: 'Username',
-        password: 'Password'
-    };
-
-    fetch(apiUrl, {
+async function onRegisterSubmit(e){
+    e.preventDefault();
+    const username = document.getElementById('registerUsername').value;
+    const email = document.getElementById('registerEmail').value;
+    const password = document.getElementById('registerPassword').value;
+    const response = await fetch(apiUrl+'/register', {
         method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(userCredentials)
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({"Username" : username, "Password" : password, "Email" : email})
+    }).then(response=>{
+        if (response.status === 201){
+            openLoginDialog()
+            const data = response.json();
+        }
+    }).catch(error=>{
+        console.warn(error);
     })
-    .then(response => response.json())
-    .then(data => {
-    if (data.token) {
-        localStorage.setItem('authToken', data.token);
-        window.location.reload();
-    } else {
-        alert('Login failed');
-    }
-    })
-    .catch(error => {
-    console.error('Error: Login Failed', error);
-    });
+    // insert toast
 }

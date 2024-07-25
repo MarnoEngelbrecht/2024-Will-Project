@@ -6,7 +6,7 @@ document.getElementById('registerForm').onsubmit = async function(e) {
     const response = await fetch('/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username, password, email})
+        body: JSON.stringify({username, password, email})
     });
     const data = await response.json();
     alert(data.message);
