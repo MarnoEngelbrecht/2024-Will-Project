@@ -76,12 +76,6 @@ document.addEventListener('DOMContentLoaded', function() {
     closeDialogCreateAccountButton.addEventListener('click', function() {
         dialog.close();
     });
-
-    dialog.addEventListener('click', function(event) {
-        if (event.target === dialog) {
-            dialog.close();
-        }
-    });
 });
 
 const apiUrl = 'http://127.0.0.1:5000/user';
