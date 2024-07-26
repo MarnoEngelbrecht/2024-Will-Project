@@ -45,21 +45,33 @@ function createPropertyCard(property) {
     title.textContent = property.Title;
     card.appendChild(title);
 
+    const iconContainer = document.createElement('div');
+    iconContainer.id = 'icon-container';
+    iconContainer.className = 'icon-container';
     const beds = document.createElement('p');
     const BedIcon = document.createElement("i");
     BedIcon.classList.add("bx");
     BedIcon.classList.add("bx-bed");
     beds.textContent = property.NrBeds + " ";
     beds.appendChild(BedIcon);
-    card.appendChild(beds);
+    iconContainer.appendChild(beds);
 
     const bathrooms = document.createElement('p');
-    bathrooms.textContent = property.NrBathrooms + " Bathrooms";
-    card.appendChild(bathrooms);
+    const BathIcon = document.createElement("i");
+    BathIcon.classList.add("bx");
+    BathIcon.classList.add("bx-bath");
+    bathrooms.textContent = property.NrBathrooms + " ";
+    bathrooms.appendChild(BathIcon);
+    iconContainer.appendChild(bathrooms);
 
     const parking = document.createElement('p');
-    parking.textContent = property.ParkingSpots + " Parking Spots";
-    card.appendChild(parking);
+    const CarIcon = document.createElement("i");
+    CarIcon.classList.add("bx");
+    CarIcon.classList.add("bx-car");
+    parking.textContent = property.ParkingSpots + " ";
+    parking.appendChild(CarIcon);
+    iconContainer.appendChild(parking);
+    card.appendChild(iconContainer)
 
     const link = document.createElement('a');
     link.href = 'details.html';
