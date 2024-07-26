@@ -1,21 +1,125 @@
+.dropdown{
+    height: 66px;
+    display: grid;
+    align-items: center;
+    padding: 0px 5px 0px 5px;
+    cursor: pointer;
+    
+    a {
+        text-decoration: none;
+        color: rgb(255,255,255);
+        font-weight: bold;
+    }
+}
 .dropdown-content {
     display: none;
     position: absolute;
-    background-color: #f9f9f9;
+    top: 67px;
+    right: 0;
+    background-color: #003135;
     min-width: 160px;
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
     z-index: 1;
 }
+
 .dropdown-content a {
-    color: black;
+    color: rgb(255,255,255);
     padding: 12px 16px;
     text-decoration: none;
     display: block;
 }
+
 .dropdown-content a:hover {
-    background-color: #f1f1f1;
+    background-color: #026169;
 }
 
 .dropdown:hover .dropdown-content {
     display: block;
+}
+.dropdown-content a:first-child{
+    border-bottom: 0.5px rgb(255,255,255) solid;
+}
+.dropdown-content:hover{
+    display: block;
+}
+
+nav {
+    background-color: #003135;
+    display: flex;
+    justify-content: space-between;
+    padding: 0px 10px 0px 0px;
+    margin: 0px;
+    align-items: center;
+    color: #fff;
+}
+  
+nav .logo a {
+    color: #fff;
+    font-size: 1.5rem;
+    text-decoration: none;
+}
+  
+nav ul {
+    list-style: none;
+    display: flex;
+    gap: 1rem;
+}
+  
+nav ul li a {
+    color: #fff;
+    font-weight: bold;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.agent-dialog{
+    background-color: #ffffff;
+    border: 1px solid black;
+    border-radius: 0px;
+    width: 1000px;
+    height: 700px;
+    display: none;
+    flex-direction: column;
+}
+
+.top-box, .bottom-box{
+    outline: red 1px solid;
+    flex-grow: 1;
+    margin: 5px;
+}
+
+.bottom-box{
+    height: 400px;
+}
+
+.top-box {
+    height: 50px;
+    display: grid;
+    align-items: center;
+    text-align: center;
+}
+
+.agent-username {
+    font-weight: bold;
+}
+
+.item {
+    margin: 4px;
+    border-radius: 5px;
+    background-color: white;
+    min-height: 50px;
+}
+
+.listings-list{
+    background-color: rgb(195,195,195);
+    margin: 8px;
+    border-radius: 10px;
+    padding: 10px;
+    height: 415px;
+    overflow-y: none;
+}
+
+.list-scroller{
+    height: 405px;
+    overflow-y: auto;
 }

@@ -124,6 +124,11 @@ conn = pyodbc.connect(conn_str)
 cursor = conn.cursor()
 # Users 
 
+@app.route('/user/validate', methods=['GET'])
+@token_required
+def validate():
+    return jsonify({'success' : True}), 200
+
 @app.route('/user/login', methods=['POST'])
 def login():
     data = request.get_json()
