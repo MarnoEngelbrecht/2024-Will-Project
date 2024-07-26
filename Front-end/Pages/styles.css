@@ -100,3 +100,8 @@ dialog {
     background-color: rgba(0, 0, 0, 0);
     border-radius: 15px;
 }
+
+.icon-container {
+    display: flex;
+    gap: 15px;
+}
