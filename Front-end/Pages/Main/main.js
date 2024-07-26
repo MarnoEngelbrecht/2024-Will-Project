@@ -101,6 +101,8 @@ async function onLoginSubmit(e){
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({"Email" : username, "Password" : password }),
         credentials: 'include'
+    }).catch(error=>{
+        console.warn(error);
     });
     const data = await response.json();
     if (response.status === 200) {
@@ -127,5 +129,16 @@ async function onRegisterSubmit(e){
     }).catch(error=>{
         console.warn(error);
     })
+    // if (){
+
+    // }
+    
     // insert toast
+}
+
+function login(){
+    fetch(apiUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+    })
 }
