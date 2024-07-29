@@ -85,3 +85,13 @@ dialog {
     margin: 15px;
     cursor: pointer;
 }
+.privacy-policy, .terms-of-service {
+    margin-left: 10px; 
+}
+.delete-icon{
+    color: red;
+    position: absolute;
+    top: 0;
+    left: 0;
+    margin: 15px;
+}

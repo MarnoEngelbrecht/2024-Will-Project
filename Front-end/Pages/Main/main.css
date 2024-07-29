@@ -80,6 +80,7 @@ nav ul li a {
     height: 700px;
     display: none;
     flex-direction: column;
+    overflow: hidden;
 }
 
 .top-box, .bottom-box{
@@ -93,7 +94,7 @@ nav ul li a {
 }
 
 .top-box {
-    height: 50px;
+    max-height: 50px;
     display: grid;
     align-items: center;
     text-align: center;
@@ -101,13 +102,6 @@ nav ul li a {
 
 .agent-username {
     font-weight: bold;
-}
-
-.item {
-    margin: 4px;
-    border-radius: 5px;
-    background-color: white;
-    min-height: 50px;
 }
 
 .listings-list{
@@ -122,4 +116,32 @@ nav ul li a {
 .list-scroller{
     height: 405px;
     overflow-y: auto;
+}
+
+.item {
+    display: flex;
+    margin: 4px;
+    border-radius: 5px;
+    background-color: white;
+    min-height: 50px;
+    padding: 8px;
+    
+    .icon-container {
+        display: flex;
+        min-width: 60px;
+        flex-direction: row;
+        gap: 15px;
+        margin: 8px; 
+        margin-left: 20px;
+    }
+
+    a {
+        height: 20px;
+    }
+
+    .link-container{
+        display: grid;
+        text-align: center;
+        align-items: center;
+    }
 }

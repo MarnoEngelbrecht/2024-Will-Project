@@ -1,0 +1,81 @@
+.add-icon-container {
+    width: fit-content;
+    background-color: #007BFF;
+    border-radius: 50px;
+    color: white;
+    display: grid;
+    align-items: center;
+    position: fixed;
+    top: 70px;
+    right: 0;
+    margin: 8px;
+}
+.add-icon-container:hover{
+    background-color: #003d7d;
+    cursor: pointer;
+}
+
+.listing-add{
+    background-color: #fff;
+    border: 1px solid black;
+    border-radius: 15px;
+    padding: 15px;
+    width: 800px;
+    height: 600px;
+}
+
+.container{
+    display: flex;
+    flex-direction: row;
+    
+    .box-right, .box-left{
+        flex-grow: 1;
+        width: 50%;
+    }
+
+    .box-right{
+
+        .listings-form{
+            padding: 10px;
+            margin: 10px;
+        }
+        
+        .add-propery-form {
+            display: block;
+            margin-bottom: 20px;
+        }
+        
+        input[type="text"]{
+            height: 10px;
+            width: 250px;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #bdbdbd;
+            border-radius: 10px;
+        }
+
+        input[type="number"]{
+            height: 10px;
+            width: 10px;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #bdbdbd;
+            border-radius: 10px;  
+        }
+        
+        input[type="number"]::-webkit-outer-spin-button,
+        input[type="number"]::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        .add-propery-button {
+            width: 160px;
+            height: 25px;
+            background: #007BFF;
+            border: 1px solid black;
+            border-radius: 10px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+    }  
+}

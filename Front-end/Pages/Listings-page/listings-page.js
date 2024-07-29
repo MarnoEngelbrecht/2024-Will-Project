@@ -1,10 +1,13 @@
 // Function to fetch a list of objects from the API
-function fetchProperties() {
+
+async function fetchProperties() {
     // URL of the API endpoint
-    const apiUrl = 'http://127.0.0.1:5000/properties';
-    let list_grid = document.getElementById("listings-grid")
     // Perform a GET request
-    fetch(apiUrl+"/getcollection")
+    let list_grid = document.getElementById("listings-grid")
+    await fetch(apiUrlProperty+"/getcollection",{
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' },
+    })
         .then(response => {
             // Check if the request was successful
             if (!response.ok) {
@@ -17,9 +20,9 @@ function fetchProperties() {
             // Handle the list of objects returned by the API
             console.log(data);
             // Assuming the data is an array of property objects
-            data.forEach(property => {
+            data.forEach(async property => {
                 // Create a property card for each object
-                const card = createPropertyCard(property);
+                const card = await createPropertyCard(property);
                 // Append the card to the container element
                 list_grid.appendChild(card);
             });
@@ -31,13 +34,13 @@ function fetchProperties() {
 }
 
 // Function to create a property card 
-function createPropertyCard(property) {
+async function createPropertyCard(property) {
     const card = document.createElement('div');
     card.id = 'property-card';
     card.className = 'property-card';
 
     const img = document.createElement('img');
-    img.src = property.Thumbnail;
+    img.src = await getThumbnail(property.RefProperty);
     img.alt = 'property image';
     card.appendChild(img);
 
@@ -74,11 +77,67 @@ function createPropertyCard(property) {
     card.appendChild(iconContainer)
 
     const link = document.createElement('a');
-    link.href = 'details.html';
     link.className = 'cta-button';
     link.textContent = 'View Details';
+    link.setAttribute('onclick', `viewProperty('${property.RefProperty}')`);
     card.appendChild(link);
 
     return card;
 }
 
+function showListingAddDialog(){
+    const dialog = document.getElementById('listing-add');
+    dialog.showModal();
+}
+
+function oncloseListingsDialog(){
+    const dialog = document.getElementById('listing-add');
+    dialog.close();
+}
+
+async function onupload() {
+    
+    let title = document.getElementById('property-title').value;
+    let nrBedrooms = document.getElementById('property-bedrooms').value;
+    let nrBathrooms = document.getElementById('property-bathrooms').value;
+    let nrParking = document.getElementById('property-parking').value;
+    let image = document.getElementById('imageInput').files[0];
+
+    await fetch(apiUrlProperty + "/insert", {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({"Thumbnail" : image, 'Title': title, 'Address': null, 'NrBeds' : nrBedrooms, 'NrBathrooms' : nrBathrooms, 'ParkingSpots' : nrParking }),
+        credentials: 'include',
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok ' + response.statusText);
+        }
+        refreshList();
+    }).catch(error => {
+        console.error('There was a problem with the fetch operation:', error);
+    });
+}
+
+function refreshList(){
+    location.reload()
+    navigateTo('../Listings-page/listings-page.html')
+    fetchProperties();
+}
+
+async function getThumbnail(RefProperty){
+    await fetch('http://127.0.0.1:5000/properties/image/'+RefProperty, {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+    })
+    .then( async response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok ' + response.statusText);
+        }
+        const data = await response.json();
+        return data.image;
+    }).catch(error => {
+        console.error('There was a problem with the fetch operation:', error);
+    });
+}

@@ -1,8 +1,62 @@
 <section id="listings" class="listings">
     <h2>Featured Listings</h2>
     <div id="listings-grid" class="listings-grid">
-        
+
     </div>
 </section>
+<div class="add-icon-container" id="add-listing-button" onclick="showListingAddDialog()">
+    <i class='bx bx-plus bx-md'></i>
+</div>
+<dialog class="listing-add" id="listing-add">
+    <h1>Create Listing</h1>
+    <div class="container">
+        <i class='bx bx-x bx-sm exit-icon' onclick="oncloseListingsDialog()"></i>
+        <div class="box-left">
+            <h1>Select Location</h1>
+            <div class="map-container">
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3487.2059458347176!2d26.23124371188569!3d-29.070058675326234!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1e8fd00f25500655%3A0x1cf8dc4d9bf9d45!2sNorthridge%20Mall!5e0!3m2!1sen!2sza!4v1722255636824!5m2!1sen!2sza" width="400" height="300" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            </div>
+        </div>
+        <div class="box-right">
+            <h1>Enter Property Details</h1>
+            <form action="submit" class="listings-form" method="POST">
+                <div  class="add-propery-form">
+                    <label>Property Name</label>
+                    <div class="spacer"></div>
+                    <input id="property-title" type="text">
+                </div>
 
-<!-- <script src="../Listings-page/listings-page.js"></script> -->
+                <div class="add-propery-form">
+                    <label>Number of Bedrooms</label>
+                    <div class="spacer"></div>
+                    <input id="property-bedrooms" type="number">                
+                </div>
+
+                <div class="add-propery-form">
+                    <label>Number of Bathrooms</label>
+                    <div class="spacer"></div>
+                    <input id="property-bathrooms" type="number">                    
+                </div>
+
+                <div class="add-propery-form">
+                    <label>Number of Parking Spots</label>
+                    <div class="spacer"></div>
+                    <input id="property-parking" type="number">
+                </div>
+
+                <div class="add-propery-form">
+                    <label>Property Image</label>
+                    <div class="spacer"></div>
+                    <input type="file" id="imageInput" accept="image/*" required>
+                </div>
+                
+                <div class="add-propery-form">
+                    <input onclick="onupload()" value="Submit" type="button" class="add-propery-button" id="add-propery-button">
+                </div>
+
+            </form>
+        </div>
+    </div>
+</dialog>
+
+<script src="../Listings-page/listings-page.js"></script>

@@ -1,0 +1,26 @@
+.details-container{
+    display: flex;
+    flex-direction: row;
+    margin: 10px;
+    background-color: rgb(179,179,179);
+    height: 84vh;
+    border: 2px solid black;
+    border-radius: 15px;
+}
+.details-box-right, .details-box-left {
+    flex-grow: 1;
+    width: 50%;
+}
+.details-image {
+    margin: 10px;
+    width: 400px;
+}
+.details {
+    text-align: center;
+    margin: 15px;
+    font-weight: bold;
+    font-size: 30px;
+}
+.details-image-container {
+    text-align: center;
+}

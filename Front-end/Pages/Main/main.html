@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EpicEstates</title>
     <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="../Details-page/details-page.css">
     <link rel="stylesheet" href="../Main/main.css">
     <link rel="stylesheet" href="../Listings-page/listings-page.css">
     <script src="https://kit.fontawesome.com/175b84bdec.js" crossorigin="anonymous"></script>
@@ -30,7 +31,7 @@
             <div class="dropdown" id="userDropdown" style="display: none;">
                   <a class="dropbtn">User</a>
                   <div class="dropdown-content">
-                  <a id="open-profile-dialog">Profile</a>
+                  <a id="open-profile-dialog" onclick="loadUserProfile(currentUser)">Profile</a>
                   <a href="" id="logout">Logout</a>
             </div>
       </nav>
@@ -108,6 +109,7 @@
     </dialog>
 
     <dialog id="agent-profile-dialog" class="agent-dialog">
+      <i class='bx bx-trash bx-sm delete-icon' onclick="confirmDelete()" ></i>
       <i id="close-agent-profile-dialog" class='bx bx-x bx-sm exit-icon'></i>
       <div class="top-box">
             <span id="agent-username" class="agent-username">Username</span>
@@ -115,19 +117,9 @@
 
       <div class="bottom-box">
             <h2>Featured Listings</h2>
-            <div id="listings-list" class="listings-list">
-                <div class="list-scroller">
-                    <div class="item">Item 1</div>
-                    <div class="item">Item 1</div>
-                    <div class="item">Item 1</div>
-                    <div class="item">Item 1</div>
-                    <div class="item">Item 1</div>
-                    <div class="item">Item 1</div>
-                    <div class="item">Item 1</div>
-                    <div class="item">Item 1</div>
-                    <div class="item">Item 1</div>
-                    <div class="item">Item 1</div>
-                    <div class="item">Item 1</div>
+            <div class="listings-list">
+                <div id="listings-list"  class="list-scroller">
+                  
                 </div>
             </div>
       </div>
@@ -147,5 +139,7 @@
     </footer>
 
     <script src="../Main/main.js"></script>
+    <script src="../Main/agent-profile.js"></script>
+    <script src="../Details-page/property-detail.js"></script>
 </body>
 </html>

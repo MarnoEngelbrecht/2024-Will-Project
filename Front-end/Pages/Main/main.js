@@ -1,3 +1,4 @@
+let currentUser;
 content = document.getElementById('content');
 function navigateTo(href) {
     if (href != null && href != ""){
@@ -61,6 +62,10 @@ const agentProfileDialog = document.getElementById('agent-profile-dialog');
 const closeAgentProfileDialog = document.getElementById('close-agent-profile-dialog');
 
 document.addEventListener('DOMContentLoaded', function() {
+    const cachedValue = localStorage.getItem('user');
+    if (cachedValue) {
+        currentUser = cachedValue;
+    }
     navigateTo('../Landing-page/landing-page.html');
 
     checkLoginStatus();
@@ -110,13 +115,14 @@ function openLoginDialog(){
     loginDialog.showModal();    
 }
 
-const apiUrl = 'http://127.0.0.1:5000/user';
+const apiUrlUser = 'http://127.0.0.1:5000/user';
+const apiUrlProperty = 'http://127.0.0.1:5000/properties';
 
 async function onLoginSubmit(e){
     e.preventDefault();
     const username = document.getElementById('loginUsername').value;
     const password = document.getElementById('loginPassword').value;
-    const response = await fetch(apiUrl+'/login', {
+    const response = await fetch(apiUrlUser+'/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({"Email" : username, "Password" : password }),
@@ -127,6 +133,8 @@ async function onLoginSubmit(e){
     const data = await response.json();
     if (response.status === 200) {
         // Redirect to a new HTML page
+        currentUser = data['User'];
+        localStorage.setItem('user', currentUser);
         navigateTo('../Landing-page/landing-page.html');
     }
     await checkLoginStatus();
@@ -139,7 +147,7 @@ async function onRegisterSubmit(e){
     const username = document.getElementById('registerUsername').value;
     const email = document.getElementById('registerEmail').value;
     const password = document.getElementById('registerPassword').value;
-    const response = await fetch(apiUrl+'/register', {
+    const response = await fetch(apiUrlUser+'/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({"Username" : username, "Password" : password, "Email" : email})
@@ -158,7 +166,7 @@ async function onRegisterSubmit(e){
 async function checkLoginStatus() {
     const loginLink = document.getElementById('open-login-dialog')
     const userDropdown = document.getElementById('userDropdown')
-    await fetch(apiUrl+'/validate', {
+    await fetch(apiUrlUser+'/validate', {
         method: 'GET',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include'
