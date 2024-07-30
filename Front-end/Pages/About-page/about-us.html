@@ -1,21 +1,35 @@
-<section id="about" class="about-us">
-    <h2>Our Purpose</h2>
-    <p>At EpicEstates, we are committed to helping you find the perfect home. Whether you're looking to buy, sell, or rent, our platform offers a wide range of properties to suit every need and budget. Our dedicated team of real estate experts is here to guide you every step of the way.</p>
-</section>
-
-<section id="contact" class="contact">
-  <h2>Contact Us</h2>
-  <p>Have questions? Reach out to us and we'll be happy to help.</p>
-  <form>
-      <label for="name">Name:</label>
-      <input type="text" id="name" name="name" required>
+<div class="about-us-container">
+  <section id="about-us" class="about-us">
+      <h2>Our Purpose</h2>
+      <p>At EpicEstates, we are committed to helping you find the perfect home. Whether you're looking to buy, sell, or rent, our platform offers a wide range of properties to suit every need and budget. Our dedicated team of real estate experts is here to guide you every step of the way.</p>
+      <h2>Mission</h2>
+      <p>To empower home seekers by providing a user-friendly platform that offers comprehensive property listings, ensuring a seamless and transparent experience from search to purchase. We strive to connect buyers with their ideal homes through innovative technology and personalized service.</p>
+      <h2>Vision</h2>
+      <p>To become the leading property listings website, renowned for its commitment to excellence, innovation, and customer satisfaction. We envision a future where every individual can effortlessly find their perfect home, with our platform setting the standard for trust, efficiency, and accessibility in the real estate market.</p>
+    </section>
+  
+  <section id="contact-us" class="contact-us">
+    <h2>Contact Us</h2>
+    <p>Have questions? Reach out to us and we'll be happy to help.</p>
+    <form>
+      <div class="about-us-box">
+        <label id="about-us-name">Name:</label>
+        <input type="text" id="name" name="name" required>
+      </div>
+        
+      <div class="about-us-box">
+        <label id="about-us-email">Email:</label>
+        <input type="email" id="email" name="email" required>
+      </div>
       
-      <label for="email">Email:</label>
-      <input type="email" id="email" name="email" required>
-      
-      <label for="message">Message:</label>
-      <textarea id="message" name="message" rows="4" required></textarea>
-      
-      <button type="submit">Send Message</button>
-  </form>
-</section>
+      <div class="about-us-box">
+        <label id="about-us-message">Message:</label>
+        <input type="text" id="message" name="message" required>
+      </div>
+        
+      <div class="about-us-box">
+        <button onclick="aboutUsButton()" type="submit">Send Message</button>
+      </div>
+    </form>
+  </section>
+</div>
