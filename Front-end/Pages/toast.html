@@ -9,49 +9,26 @@
     <link rel="stylesheet" href="./Listings-page/listings-page.css">
 </head>
 <body>
-    <h1>Create Listing</h1>
-    <div class="container">
-        <div class="box-left">
+    <div class="details-page-contact">
+        <form id="details-page-form" class="details-page-form">
+            <div class="details-page-container">
+                <input type="text" id="details-page-username" name="details-page-username" placeholder="Username" required>                
+            </div>
 
-        </div>
-        <div class="box-right">
-            <form action="submit" class="listings-form" method="POST">
-                <div class="add-propery-form">
-                    <label>Property Name</label>
-                    <div class="spacer"></div>
-                    <input type="text">
-                </div>
+            <div class="details-page-container">                
+                <input type="email" id="details-page-email" name="details-page-email" placeholder="Email" required>
+            </div>
 
-                <div class="add-propery-form">
-                    <label>Number of Bedrooms</label>
-                    <div class="spacer"></div>
-                    <input type="number">                
-                </div>
-
-                <div class="add-propery-form">
-                    <label>Number of Bathrooms</label>
-                    <div class="spacer"></div>
-                    <input type="number">                    
-                </div>
-
-                <div class="add-propery-form">
-                    <label>Number of Parking Spots</label>
-                    <div class="spacer"></div>
-                    <input type="number">
-                </div>
-
-                <div class="add-propery-form">
-                    <label>Property Image</label>
-                    <div class="spacer"></div>
-                    <input type="url">
-                </div>
-                
-                <div class="add-propery-form">
-                    <input type="button" class="add-propery-button" id="add-propery-button">
-                </div>
-
-            </form>
-        </div>
+            <div class="details-page-container">                
+                <input type="text" id="details-page-message" name="details-page-message" placeholder="Message" required>                
+            </div>   
+    
+            <div class="wrap">
+                  <button type="submit" class="cta-button" onclick="">
+                        Create Account
+                  </button>
+            </div>
     </div>
+
 </body>
 </html>

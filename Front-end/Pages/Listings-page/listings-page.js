@@ -126,18 +126,18 @@ function refreshList(){
 }
 
 async function getThumbnail(RefProperty){
-    await fetch('http://127.0.0.1:5000/properties/image/'+RefProperty, {
-        method: 'GET',
-        headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
-    })
-    .then( async response => {
-        if (!response.ok) {
-            throw new Error('Network response was not ok ' + response.statusText);
-        }
-        const data = await response.json();
-        return data.image;
-    }).catch(error => {
-        console.error('There was a problem with the fetch operation:', error);
-    });
+    // await fetch('http://127.0.0.1:5000/properties/image/'+RefProperty, {
+    //     method: 'GET',
+    //     headers: { 'Content-Type': 'application/json' },
+    //     credentials: 'include',
+    // })
+    // .then( async response => {
+    //     if (!response.ok) {
+    //         throw new Error('Network response was not ok ' + response.statusText);
+    //     }
+    //     const data = await response.json();
+    //     return data.image;
+    // }).catch(error => {
+    //     console.error('There was a problem with the fetch operation:', error);
+    // });
 }

@@ -140,7 +140,6 @@ def login():
         return jsonify({'message': 'Invalid credentials'}), 401
 
 @app.route('/user/<int:RefUser>', methods=['GET'])
-@token_required
 def get_user(RefUser):
     try:
         cursor.execute("SELECT * FROM users WHERE RefUser=?", (RefUser,))
