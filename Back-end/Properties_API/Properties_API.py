@@ -1,10 +1,12 @@
-from flask import Flask, request, jsonify, make_response
+from flask import Flask, request, jsonify, make_response, send_file
 import pyodbc
 from flask_cors import CORS
 import jwt
 import datetime
 import bcrypt
 from functools import wraps
+import io
+import base64
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = '&2b6X8V!hHR*EyipHico'
@@ -35,50 +37,26 @@ class User:
 currentUser = User(None, None, None, None, None)
 
 class Property:
-    def __init__(self, RefProperty, Title, Thumbnail, Address, NrBeds, NrBathrooms, HasPool, ParkingSpots, HasWifi, HasGarden, PropertySize, RefUser):
+    def __init__(self, RefProperty, Title, Address, NrBeds, NrBathrooms, ParkingSpots, RefUser):
         self.RefProperty = RefProperty
         self.Title = Title
-        self.Thumbnail = Thumbnail
         self.Address = Address
         self.NrBeds = NrBeds
         self.NrBathrooms = NrBathrooms
-        self.HasPool = HasPool
         self.ParkingSpots = ParkingSpots
-        self.HasWifi = HasWifi
-        self.HasGarden = HasGarden
-        self.PropertySize = PropertySize
         self.RefUser = RefUser
     
     def to_dict(self):
         return {
             'RefProperty': self.RefProperty,
             'Title': self.Title,
-            'Thumbnail': self.Thumbnail,
             'Address': self.Address,
             'NrBeds': self.NrBeds,
             'NrBathrooms': self.NrBathrooms,
-            'HasPool': self.HasPool,
             'ParkingSpots': self.ParkingSpots,
-            'HasWifi': self.HasWifi,
-            'HasGarden': self.HasGarden,
-            'PropertySize': self.PropertySize,
             'RefUser' : self.RefUser
         }
-
-    # def parseJSON(self, data):
-    #     self.RefProperty = data['RefProperty']
-    #     self.Title = data['Title']
-    #     self.Thumbnail = data['Thumbnail']
-    #     self.Address = data['Address']
-    #     self.NrBeds = data['NrBeds']
-    #     self.NrBathrooms = data['NrBathrooms']
-    #     self.HasPool = data['HasPool']
-    #     self.ParkingSpots = data['ParkingSpots']
-    #     self.HasWifi = data['HasWifi']
-    #     self.HasGarden = data['HasGarden']
-    #     self.PropertySize = data['PropertySize']
-    #     return self
-
+    
 #Login
 def hash_password(password):
     salt = bcrypt.gensalt()
@@ -112,8 +90,20 @@ def token_required(f):
         return f(*args, **kwargs)
     return decorated
 
+def getUserByToken():
+    token = request.cookies.get('properties_token')
+    if not token:
+        return jsonify({'message': 'Token is missing'}), 403
+    try:
+        data = jwt.decode(token, app.config['SECRET_KEY'], algorithms=['HS256'])
+        return data.get('RefUser')
+    except jwt.ExpiredSignatureError:
+        return jsonify({'message': 'Token has expired'}), 403
+    except jwt.InvalidTokenError:
+        return jsonify({'message': 'Invalid token'}), 403
+
 def parsePropertyJSON(data):
-    return Property(None, data['Title'], data['Thumbnail'], data['Address'], data['NrBeds'], data['NrBathrooms'], data['HasPool'], data['ParkingSpots'], data['HasWifi'], data['HasGarden'], data['PropertySize'], data['RefUser'])
+    return Property(None, data['Title'], data['Address'], data['NrBeds'], data['NrBathrooms'], data['ParkingSpots'], data['RefUser'])
 
 # Configure database connection
 conn_str = (
@@ -122,7 +112,12 @@ conn_str = (
 )
 conn = pyodbc.connect(conn_str)
 cursor = conn.cursor()
+
 # Users 
+@app.route('/user/validate', methods=['GET'])
+@token_required
+def validate():
+    return jsonify({'success' : True}), 200
 
 @app.route('/user/login', methods=['POST'])
 def login():
@@ -138,21 +133,22 @@ def login():
     # if bcrypt.hashpw(password.encode('utf-8'), salt.encode('utf-8')) == exist['Password']:
     if bcrypt.checkpw(byte_password, u_byte_password):
         token = generate_jwt(user['RefUser'], user['Username'], user['Email'])
-        resp = make_response(jsonify({'message': 'Login successful'}))
+        resp = make_response(jsonify({'message': 'Login successful', 'User' : user['RefUser']}))
         resp.set_cookie('properties_token', token, httponly=True)
-        currentUser = User(user['RefUser'], user['Username'], user['Email'], None, None)
         return resp
     else:
         return jsonify({'message': 'Invalid credentials'}), 401
 
 @app.route('/user/<int:RefUser>', methods=['GET'])
-@token_required
 def get_user(RefUser):
-    cursor.execute("SELECT * FROM users WHERE RefUser=?", RefUser)
-    row = cursor.fetchone()
-    if row:
-        return jsonify(User(row.RefUser, row.Username, row.Email, None, None).to_dict())
-    return jsonify({'error': 'User not found'}), 404
+    try:
+        cursor.execute("SELECT * FROM users WHERE RefUser=?", (RefUser,))
+        row = cursor.fetchone()
+        if row:
+            return jsonify(User(row.RefUser, row.Username, row.Email, None, None).to_dict())
+        return jsonify({'error': 'User not found'}), 404
+    except pyodbc.Error as e:
+        return jsonify({'error': str(e)}), 500
 
 @app.route('/user/GetModelByEmail', methods=['GET'])
 @token_required
@@ -216,7 +212,7 @@ def get_property_collection():
     rows = cursor.fetchall()
     items = []
     for row in rows:
-        items.append(Property(row.RefProperty, row.Title, row.Thumbnail, row.Address, row.NrBeds, row.NrBathrooms, row.HasPool, row.ParkingSpots, row.HasWifi, row.HasGarden, row.PropertySize, row.RefUser).to_dict())
+        items.append(Property(row.RefProperty, row.Title, row.Address, row.NrBeds, row.NrBathrooms, row.ParkingSpots, row.RefUser).to_dict())
     return jsonify(items)
 
 @app.route('/properties/<int:RefProperty>', methods=['GET'])
@@ -224,24 +220,50 @@ def get_property(RefProperty):
     cursor.execute("SELECT * FROM properties WHERE RefProperty=?", RefProperty)
     row = cursor.fetchone()
     if row:
-        return jsonify(Property(row.RefProperty, row.Title, row.Thumbnail, row.Address, row.NrBeds, row.NrBathrooms, row.HasPool, row.ParkingSpots, row.HasWifi, row.HasGarden, row.PropertySize, row.RefUser).to_dict())
+        return jsonify(Property(row.RefProperty, row.Title, row.Address, row.NrBeds, row.NrBathrooms, row.ParkingSpots, row.RefUser).to_dict())
     return jsonify({'error': 'Property not found'}), 404
 
 @app.route('/properties/insert', methods=['POST'])
 @token_required
 def create_property():
     data = request.get_json()
+    if currentUser.RefUser == None:
+        currentUser.RefUser = getUserByToken()
     property = parsePropertyJSON(data)
-    cursor.execute("INSERT INTO properties (Title, Thumbnail, Address, NrBeds, NrBathrooms, HasPool, ParkingSpots, HasWifi, HasGarden, PropertySize, RefUser) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", property.Title, property.Thumbnail, property.Address, property.NrBeds, property.NrBathrooms, property.HasPool, property.ParkingSpots, property.HasWifi, property.HasGarden, property.PropertySize, currentUser.RefUser)
+    #Image does not want to get uploaded 
+    # image_data = data['Thumbnail']
+    cursor.execute("INSERT INTO properties (Title, Thumbnail, Address, NrBeds, NrBathrooms, ParkingSpots, RefUser) VALUES (?, ?, ?, ?, ?, ?, ?)", property.Title, None, property.Address, property.NrBeds, property.NrBathrooms, property.ParkingSpots, currentUser.RefUser)
     conn.commit()
     return jsonify({'message': 'Property created successfully'}), 201
+
+
+# def insert_property():
+#     title = request.form.get('Title')
+#     address = request.form.get('Address')
+#     nr_beds = request.form.get('NrBeds')
+#     nr_bathrooms = request.form.get('NrBathrooms')
+#     parking_spots = request.form.get('ParkingSpots')
+#     thumbnail = request.files.get('Thumbnail')
+
+#     # if not title or not thumbnail:
+#     #     return jsonify({'error': 'Title and Thumbnail are required'}), 400
+
+#     thumbnail_bytes = thumbnail.read()
+
+#     c = conn.cursor()
+#     c.execute("INSERT INTO properties (Title, Address, NrBeds, NrBathrooms, ParkingSpots, Thumbnail, RefUser) VALUES (?, ?, ?, ?, ?, ?, ?)",
+#               (title, address, nr_beds, nr_bathrooms, parking_spots, thumbnail_bytes, currentUser.RefUser))
+#     conn.commit()
+
+#     return jsonify({'success': 'Property inserted successfully'}), 200
+
 
 @app.route('/properties/update/<int:RefProperty>', methods=['PUT'])
 @token_required
 def update_property(RefProperty):
     data = request.get_json()
     property = parsePropertyJSON(data)
-    cursor.execute("UPDATE properties SET Title=?, Thumbnail=?, Address=?, NrBeds=?, NrBathrooms=?, HasPool=?, ParkingSpots=?, HasWifi=?, HasGarden=?, PropertySize=? WHERE RefProperty=?", property.Title, property.Thumbnail, property.Address, property.NrBeds, property.NrBathrooms, property.HasPool, property.ParkingSpots, property.HasWifi, property.HasGarden, property.PropertySize, RefProperty)
+    cursor.execute("UPDATE properties SET Title=?, Thumbnail=?, Address=?, NrBeds=?, NrBathrooms=?, ParkingSpots=? WHERE RefProperty=?", property.Title, property.Thumbnail, property.Address, property.NrBeds, property.NrBathrooms, property.ParkingSpots, RefProperty)
     conn.commit()
     return jsonify({'message': 'Property updated successfully'}), 200
 
@@ -252,5 +274,36 @@ def delete_property(RefProperty):
     conn.commit()
     return jsonify({'message': 'Property deleted successfully'}), 200
 
+@app.route('/user/properties/<int:RefUser>', methods=['GET'])
+@token_required
+def get_user_property(RefUser):
+    cursor.execute("SELECT * FROM properties where RefUser = ?", RefUser)
+    rows = cursor.fetchall()
+    items = []
+    if rows:
+        for row in rows:
+            items.append(Property(row.RefProperty, row.Title, row.Address, row.NrBeds, row.NrBathrooms, row.ParkingSpots, row.RefUser).to_dict())
+        return jsonify(items)
+    return jsonify({'error': 'No properties found'}), 404
+
+@app.route('/properties/image/<int:RefProperty>', methods=['GET'])
+def get_image(RefProperty):
+    cursor.execute("SELECT thumbnail FROM properties WHERE RefProperty=?", (RefProperty,))
+    row = cursor.fetchone()
+    if row:
+        image_bytes = row[0]
+        return jsonify({'image','cant load'}), 201
+        # b64_image = base64.b64encode(image_bytes).decode('utf-8')
+        # return jsonify({'image': f'data:image/png;base64,{b64_image}'})
+        # return send_file(
+        #     io.BytesIO(image_bytes),
+        #     mimetype='image/jpeg',
+        #     as_attachment=False,
+        #     download_name='image.jpg'
+        # )
+    return jsonify({'error': 'Image not found'}), 404
+
+
 if __name__ == '__main__':
     app.run(debug=True)
+

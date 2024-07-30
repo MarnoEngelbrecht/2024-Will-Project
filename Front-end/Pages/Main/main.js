@@ -1,6 +1,7 @@
+let currentUser;
 content = document.getElementById('content');
 function navigateTo(href) {
-    if (href != null ){
+    if (href != null && href != ""){
         fetch(href)
         .then(response => response.text())
         .then(html => {
@@ -55,9 +56,23 @@ const closeDialogCreateAccountButton = document.getElementById('goToCreateDialog
 const closeDialogLoginButton = document.getElementById('goToLoginDialog');
 const loginDialog = document.getElementById('login-dialog');
 const createDialog = document.getElementById('create-dialog');
+const logoutButton = document.getElementById('logout');
+const openProfileDialog = document.getElementById('open-profile-dialog');
+const agentProfileDialog = document.getElementById('agent-profile-dialog');
+const closeAgentProfileDialog = document.getElementById('close-agent-profile-dialog');
 
 document.addEventListener('DOMContentLoaded', function() {
+    const cachedValue = localStorage.getItem('user');
+    if (cachedValue) {
+        currentUser = cachedValue;
+    }
     navigateTo('../Landing-page/landing-page.html');
+
+    checkLoginStatus();
+
+    logoutButton.addEventListener('click', function() {
+        logout();
+    });
 
     openLoginDialogButton.addEventListener('click', function() {
         loginDialog.showModal();
@@ -83,6 +98,16 @@ document.addEventListener('DOMContentLoaded', function() {
     closeDialogLoginButton.addEventListener('click', function() {
         openLoginDialog();
     });
+
+    openProfileDialog.addEventListener('click', function() {
+        agentProfileDialog.showModal();
+        agentProfileDialog.style.display="flex";
+    });
+
+    closeAgentProfileDialog.addEventListener('click', function() {
+        agentProfileDialog.close();
+        agentProfileDialog.style.display="none";
+    });
 });
 
 function openLoginDialog(){
@@ -90,13 +115,14 @@ function openLoginDialog(){
     loginDialog.showModal();    
 }
 
-const apiUrl = 'http://127.0.0.1:5000/user';
+const apiUrlUser = 'http://127.0.0.1:5000/user';
+const apiUrlProperty = 'http://127.0.0.1:5000/properties';
 
 async function onLoginSubmit(e){
     e.preventDefault();
     const username = document.getElementById('loginUsername').value;
     const password = document.getElementById('loginPassword').value;
-    const response = await fetch(apiUrl+'/login', {
+    const response = await fetch(apiUrlUser+'/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({"Email" : username, "Password" : password }),
@@ -107,8 +133,12 @@ async function onLoginSubmit(e){
     const data = await response.json();
     if (response.status === 200) {
         // Redirect to a new HTML page
+        currentUser = data['User'];
+        localStorage.setItem('user', currentUser);
         navigateTo('../Landing-page/landing-page.html');
     }
+    await checkLoginStatus();
+
     // insert toast
 }
 
@@ -117,7 +147,7 @@ async function onRegisterSubmit(e){
     const username = document.getElementById('registerUsername').value;
     const email = document.getElementById('registerEmail').value;
     const password = document.getElementById('registerPassword').value;
-    const response = await fetch(apiUrl+'/register', {
+    const response = await fetch(apiUrlUser+'/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({"Username" : username, "Password" : password, "Email" : email})
@@ -129,16 +159,34 @@ async function onRegisterSubmit(e){
     }).catch(error=>{
         console.warn(error);
     })
-    // if (){
-
-    // }
     
     // insert toast
 }
 
-function login(){
-    fetch(apiUrl, {
-        method: 'POST',
+async function checkLoginStatus() {
+    const loginLink = document.getElementById('open-login-dialog')
+    const userDropdown = document.getElementById('userDropdown')
+    await fetch(apiUrlUser+'/validate', {
+        method: 'GET',
         headers: { 'Content-Type': 'application/json' },
+        credentials: 'include'
+    }).then(response=>{
+        if (response.status === 200){
+            loginLink.style.display = 'none';
+            userDropdown.style.display = 'flex';
+        }
+        else{
+            loginLink.style.display = 'flex';
+            userDropdown.style.display = 'none';
+        }
+    }).catch(error=>{
+        console.warn(error)
+        loginLink.style.display = 'block';
+        userDropdown.style.display = 'none';
     })
+}
+
+function logout(){
+    document.cookie = 'properties-token' + '=; Max-Age=-99999999; path=/';
+    checkLoginStatus();
 }

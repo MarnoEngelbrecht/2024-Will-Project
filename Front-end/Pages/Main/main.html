@@ -6,34 +6,36 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EpicEstates</title>
     <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="../Details-page/details-page.css">
     <link rel="stylesheet" href="../Main/main.css">
+    <link rel="stylesheet" href="../About-page/about-us.css">
     <link rel="stylesheet" href="../Listings-page/listings-page.css">
     <script src="https://kit.fontawesome.com/175b84bdec.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="../Landing-page/landing-page.css">
     <link rel="stylesheet" href="../Login-page/login-page.css">
     <link rel='stylesheet' href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css'>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 </head>
 <body>
     <!-- Include the custom header element -->
     <nav>
-        <div class="logo">
-            <a href="../Landing-page/landing-page.html"><img src="../../Images/EpicEstates_transparent-.png"></a>
-        </div>
-        <ul class="nav-links">
-          <li><a href="../Landing-page/landing-page.html">Home</a></li>
-          <li><a href="../Listings-page/listings-page.html">Listings</a></li>
-          <li><a href="../About-page/about-us.html">About Us</a></li>
-          <li><a id="open-login-dialog">Login</a></li>
-          <li>
-            <div class="dropdown" id="userDropdown" style="display: none;">
-                  <a href="#" class="dropbtn">User</a>
-                  <div class="dropdown-content">
-                    <a href="">Profile</a>
-                    <a href="" id="logout">Logout</a>
-                  </div>
+            <div class="logo">
+                  <a href="../Landing-page/landing-page.html"><img src="../../Images/EpicEstates_transparent-.png"></a>
             </div>
-          </li>
-        </ul>
+            <div class="spacer"></div>
+            <ul class="nav-links">
+                  <li><a href="../Landing-page/landing-page.html">Home</a></li>
+                  <li><a href="../Listings-page/listings-page.html">Listings</a></li>
+                  <li><a href="../About-page/about-us.html">About Us</a></li>
+                  <li><a id="open-login-dialog">Login</a></li>
+            </ul>
+            
+            <div class="dropdown" id="userDropdown" style="display: none;">
+                  <a class="dropbtn">User</a>
+                  <div class="dropdown-content">
+                  <a id="open-profile-dialog" onclick="loadUserProfile(currentUser)">Profile</a>
+                  <a href="" id="logout">Logout</a>
+            </div>
       </nav>
 
     <dialog id="login-dialog">
@@ -74,8 +76,6 @@
             <i id="close-create-dialog" class='bx bx-x bx-sm exit-icon'></i>
             <h1>EpicEstates</h1>
             <h3>Create your new account.</h3>
-
-            <!-- helppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppp -->
             <form id="registerForm">
                   <input type="text" 
                         id="registerUsername" 
@@ -110,6 +110,23 @@
         </div>
     </dialog>
 
+    <dialog id="agent-profile-dialog" class="agent-dialog">
+      <i class='bx bx-trash bx-sm delete-icon' onclick="confirmDelete()" ></i>
+      <i id="close-agent-profile-dialog" class='bx bx-x bx-sm exit-icon'></i>
+      <div class="top-box">
+            <span id="agent-username" class="agent-username">Username</span>
+      </div>
+
+      <div class="bottom-box">
+            <h2>Featured Listings</h2>
+            <div class="listings-list">
+                <div id="listings-list"  class="list-scroller">
+                  
+                </div>
+            </div>
+      </div>
+    </dialog>
+
     <!-- Content area where other pages will be loaded -->
     <main id="content">
     </main>
@@ -124,5 +141,7 @@
     </footer>
 
     <script src="../Main/main.js"></script>
+    <script src="../Main/agent-profile.js"></script>
+    <script src="../Details-page/property-detail.js"></script>
 </body>
 </html>

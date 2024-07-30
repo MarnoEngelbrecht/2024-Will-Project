@@ -1,0 +1,42 @@
+.about-us-container{
+    display: flex;
+    flex-direction: row;
+
+    .contact-us, .about-us {
+        flex-grow: 1;
+        width: 50%;
+    }
+    .about-us {
+        display: grid;
+        align-content: center;
+    }
+    .contact-us{
+        text-align: center;
+        height: 740px;
+        border: 1px solid black;
+        border-radius: 15px;
+        margin: 10px;
+        background-color: rgb(219,219,219);
+        display: grid;
+        align-content: center;
+    }
+    .contact-us p {
+        margin: 10px;
+    }
+    input[type="text"], input[type="email"]{
+        height: 10px;
+        width: 250px;
+        padding: 8px;
+        margin: 20px;
+        border: 1px solid #bdbdbd;
+        border-radius: 10px;
+    }
+    .about-us-box button {
+        margin-top: 10px; 
+        width: 150px;
+        height: 30px;
+        border-radius: 15px;
+        background-color: #007BFF;
+        font-weight: bold;
+    }
+}

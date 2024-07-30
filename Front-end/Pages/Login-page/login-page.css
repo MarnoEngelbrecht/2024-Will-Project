@@ -69,13 +69,6 @@
         position: absolute;
         transform: translatex(170px) translatey(-40px);
     }
-    .exit-icon {
-        position: absolute;
-        top: 0;
-        right: 0;
-        margin: 15px;
-        cursor: pointer;
-    }
     a{
         color: #4049ce;
         cursor: pointer;

@@ -1,0 +1,3 @@
+function aboutUsButton(){
+    location.reload();
+}
