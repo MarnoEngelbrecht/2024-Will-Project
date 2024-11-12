@@ -1,6 +1,5 @@
-
-Going trough the code you will see that I created a Python API that saves data on an Access Database.
 Property Listings Website
+
 This project is a dynamic property listings website built using a Python API backend with data stored in an Access database. The backend handles requests, retrieves and displays listings dynamically, and uses JWT-based password hashing for secure user authentication.
 This was my WILL Project for 2024. 
 
